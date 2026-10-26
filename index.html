@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Проверь до перевода</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;800&family=Onest:wght@400;500;700&family=Caveat:wght@700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F3F4F8;--ink:#12131A;--mute:#5C5F70;--card:#FFFFFF;--line:#D9DBE6;--acc:#5B4BFF;--red:#E5322D;--yel:#FFD84D;--grn:#1FA463;--on-acc:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101116;--ink:#F1F2F7;--mute:#9A9DB0;--card:#1A1B23;--line:#2C2E3A;--acc:#8B7FFF;--red:#FF5B55;--grn:#3DD68C;--on-acc:#101116}}
+:root[data-theme="dark"]{--bg:#101116;--ink:#F1F2F7;--mute:#9A9DB0;--card:#1A1B23;--line:#2C2E3A;--acc:#8B7FFF;--red:#FF5B55;--grn:#3DD68C;--on-acc:#101116}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 Onest,system-ui,sans-serif}
+.wrap{max-width:880px;margin:0 auto;padding:0 22px}
+h1,h2{font-family:Unbounded,Onest,sans-serif;letter-spacing:-.03em;line-height:1.05;margin:0}
+h2{font-size:clamp(28px,6vw,44px);font-weight:800;margin-bottom:14px}
+p{margin:0 0 14px;max-width:62ch}
+nav{display:flex;gap:20px;justify-content:space-between;align-items:center;padding:20px 0;font-weight:500;font-size:15px}
+nav .links{display:flex;gap:18px;flex-wrap:wrap}
+nav a{color:var(--ink);text-decoration:none}nav a:hover{color:var(--acc)}
+.logo{font-family:Unbounded,sans-serif;font-weight:800;font-size:15px}
+.theme{background:none;border:1px solid var(--line);color:var(--ink);border-radius:99px;padding:6px 12px;font:inherit;font-size:14px;cursor:pointer}
+/* hero */
+.hero{padding:44px 0 72px}
+.hero h1{font-size:clamp(46px,13vw,120px);font-weight:800}
+.hero h1 span{display:block}
+.hero h1 .o{color:transparent;-webkit-text-stroke:2px var(--ink)}
+.lead{font-size:20px;margin-top:22px;color:var(--mute)}
+.chat{position:relative;margin:44px 0 0;max-width:430px;background:var(--card);border:1px solid var(--line);border-radius:22px 22px 22px 4px;padding:18px 20px;font-size:18px;line-height:1.7;transform:rotate(-1.5deg)}
+.chat small{display:block;color:var(--mute);font-size:13px;margin-bottom:6px}
+.chat mark{background:none;color:inherit;text-decoration:underline wavy var(--red) 2px;text-underline-offset:5px}
+.stamp{position:absolute;right:-8px;bottom:-34px;font-family:Caveat,cursive;font-size:34px;font-weight:700;color:var(--red);border:3px solid var(--red);border-radius:12px;padding:0 14px;transform:rotate(7deg);background:var(--bg);animation:pop .5s .5s both cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{from{transform:rotate(7deg) scale(2);opacity:0}}
+.cta{display:inline-block;margin-top:70px;background:var(--acc);color:var(--on-acc);font-weight:700;border-radius:99px;padding:14px 26px;text-decoration:none}
+.cta:focus-visible,button:focus-visible,summary:focus-visible,a:focus-visible,input:focus-visible+span{outline:3px solid var(--acc);outline-offset:3px}
+section{padding:64px 0;border-top:1px solid var(--line)}
+.note{font-family:Caveat,cursive;font-size:26px;color:var(--acc);line-height:1;margin:0 0 6px}
+/* checker */
+.checks{display:grid;gap:10px;margin:26px 0}
+.checks label{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;cursor:pointer}
+.checks input{position:absolute;opacity:0}
+.checks span.box{flex:none;width:24px;height:24px;border:2px solid var(--mute);border-radius:7px;margin-top:2px;display:grid;place-items:center;font-size:15px;color:transparent}
+.checks input:checked+span.box{background:var(--red);border-color:var(--red);color:#fff}
+.checks input:checked~span.t{font-weight:500}
+.res{border-radius:20px;padding:22px 24px;background:var(--card);border:2px solid var(--line)}
+.res.green{border-color:var(--grn)}.res.yellow{border-color:var(--yel)}.res.red{border-color:var(--red)}
+.res b{font-family:Unbounded,sans-serif;font-size:22px;display:block;margin-bottom:6px}
+.res.green b{color:var(--grn)}.res.red b{color:var(--red)}
+.meter{display:flex;gap:6px;margin:14px 0}.meter i{flex:1;height:8px;border-radius:9px;background:var(--line)}
+.meter.g i:nth-child(1){background:var(--grn)}.meter.y i:nth-child(-n+2){background:var(--yel)}.meter.r i{background:var(--red)}
+.btn{background:var(--ink);color:var(--bg);border:0;border-radius:99px;padding:11px 20px;font:700 15px Onest,sans-serif;cursor:pointer}
+.fine{color:var(--mute);font-size:14px}
+/* faq */
+details{background:var(--card);border:1px solid var(--line);border-radius:16px;margin-bottom:10px;padding:0 20px}
+summary{cursor:pointer;font-weight:700;padding:16px 0;list-style:none;display:flex;justify-content:space-between;gap:14px}
+summary::after{content:"+";font-family:Unbounded,sans-serif;color:var(--acc);transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+details>div{padding-bottom:16px}
+.src{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--mute);border-top:1px dashed var(--line);padding-top:10px;margin-top:10px}
+/* timeline */
+.tl{list-style:none;margin:26px 0 0;padding:0;border-left:2px solid var(--line)}
+.tl li{position:relative;padding:0 0 22px 26px}
+.tl li::before{content:"";position:absolute;left:-7px;top:8px;width:12px;height:12px;border-radius:50%;background:var(--acc)}
+.tl b{font-family:Unbounded,sans-serif;font-size:15px;font-weight:500}
+.tl span{display:block;color:var(--mute);font-size:15px}
+footer{padding:40px 0 60px;border-top:1px solid var(--line);color:var(--mute);font-size:14px}
+footer p{max-width:70ch}
+.sig{font-family:Caveat,cursive;font-size:28px;color:var(--ink)}
+@media (prefers-reduced-motion:reduce){.stamp{animation:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <span class="logo">проверь/узнай</span>
+  <div class="links"><a href="#check">Чекни</a><a href="#faq">А это законно?</a><a href="#about">О проекте</a></div>
+  <button class="theme" id="theme" aria-label="Сменить тему">тема</button>
+</nav>
+
+<header class="hero">
+  <h1><span>Проверь</span><span class="o">до</span><span>перевода</span></h1>
+  <p class="lead">Тебе написали «быстрый заработок на крипте»? Дай себе минуту: пройди чек-лист и узнай, что об этом говорит закон. Без занудства, с источниками.</p>
+  <div class="chat">
+    <small>@крипто_бро · сегодня, 02:14</small>
+    Бро, вложи 10к — <mark>вернём 50к уже завтра</mark>, <mark>гарантия</mark>. Скинь карту, я всё сделаю. <mark>Родителям пока не говори</mark> 🤑
+    <div class="stamp">красных флагов: 3</div>
+  </div>
+  <a class="cta" href="#check">Чекнуть своё предложение ↓</a>
+</header>
+
+<section id="check">
+  <p class="note">кринж-детектор</p>
+  <h2>Что тебе предлагают?</h2>
+  <p>Отметь всё, что совпадает с твоей ситуацией. Сайт ничего не сохраняет и не отправляет: расчёт идёт прямо у тебя в браузере.</p>
+  <div class="checks" id="checks"></div>
+  <div class="res green" id="res" aria-live="polite"></div>
+</section>
+
+<section id="faq">
+  <p class="note">без юридической каши</p>
+  <h2>А это законно?</h2>
+  <p>Короткие ответы на вопросы, которые чаще всего возникают у подростков. Это справочная информация, а не юридическая консультация.</p>
+
+  <details id="f-age"><summary>С какого возраста можно распоряжаться деньгами?</summary><div>
+    <p>Подростки 14–18 лет совершают большинство сделок с письменного согласия родителей. Самостоятельно можно распоряжаться своим заработком и стипендией, вносить вклады и совершать мелкие бытовые сделки.</p>
+    <div class="src">Источник: ГК РФ, ст. 26 · статус: черновик, сверить с актуальной редакцией</div></div></details>
+
+  <details id="f-card"><summary>Мне предлагают «подержать карту» за вознаграждение. Это законно?</summary><div>
+    <p>Нет, это опасно. Передача своей карты или доступа к счёту другому человеку может быть расценена как неправомерный оборот средств платежей. Обычно такие карты нужны, чтобы выводить украденные деньги, а проблемы потом остаются у владельца карты: блокировка счёта, допросы, возможное уголовное дело. По общему правилу уголовная ответственность наступает с 16 лет.</p>
+    <div class="src">Источник: УК РФ, ст. 187, ст. 20; ст. 159 · статус: черновик, сверить с актуальной редакцией</div></div></details>
+
+  <details id="f-crypto"><summary>Можно ли расплачиваться криптовалютой в магазинах РФ?</summary><div>
+    <p>Нет. По закону о цифровых финансовых активах цифровую валюту нельзя принимать как встречное предоставление за товары, работы и услуги в России. Владеть ею запрета нет, но защита прав при этом очень ограничена.</p>
+    <div class="src">Источник: 259-ФЗ от 31.07.2020 · статус: черновик, сверить с актуальной редакцией</div></div></details>
+
+  <details id="f-invest"><summary>Блогер зовёт «вложиться». Как понять, что это не скам?</summary><div>
+    <p>Само вложение денег не запрещено. Но если нет договора, данных о компании и её статуса в реестрах Банка России, а доход «гарантируют», это типичные признаки нелегального участника рынка или пирамиды. Проверь компанию на сайте Банка России и спроси совета у взрослых, которым доверяешь.</p>
+    <div class="src">Источник: материалы и предупреждения Банка России · статус: черновик, сверить с актуальной редакцией</div></div></details>
+
+  <details id="f-tax"><summary>Надо ли платить налог с доходов от крипты?</summary><div>
+    <p>Доходы физических лиц облагаются НДФЛ, в том числе от операций с цифровыми активами. За несовершеннолетнего обычно отвечают законные представители, поэтому разбираться с налогами лучше вместе с родителями.</p>
+    <div class="src">Источник: Налоговый кодекс РФ · статус: черновик, сверить с актуальной редакцией</div></div></details>
+
+  <details id="f-help"><summary>Я уже перевёл деньги или отдал карту. Что делать?</summary><div>
+    <p>Не прячься и не ведись на «верни, а то хуже будет». Сразу позвони в банк по номеру на карте и заблокируй её, расскажи родителям или взрослому, которому доверяешь, и обратись в полицию (112). Чем раньше, тем больше шансов вернуть деньги.</p>
+    <div class="src">Источник: памятки МВД России и Банка России · статус: черновик, сверить с актуальной редакцией</div></div></details>
+</section>
+
+<section id="about">
+  <p class="note">зачем всё это</p>
+  <h2>О проекте</h2>
+  <p>Подростков всё чаще втягивают в схемы: «подержи карту», «заработок на крипте», «вложение по совету блогера». Информация в сети разрозненная, написана сложным языком или устарела. Этот проект объединяет быструю проверку предложения и понятное объяснение закона.</p>
+  <p><b>Гипотеза:</b> если за минуту проверить предложение по понятному чек-листу и сразу узнать правовую сторону, подросток чаще распознаёт обман и реже соглашается на рискованные действия.</p>
+  <ul class="tl">
+    <li><b>Октябрь 2026</b><span>тема, цель и паспорт проекта</span></li>
+    <li><b>Ноябрь</b><span>источники, схемы обмана, чек-лист и система «красный / жёлтый / зелёный»</span></li>
+    <li><b>Декабрь</b><span>справочник «А это законно?», сайт, анонимный опрос сверстников</span></li>
+    <li><b>Январь 2027</b><span>тестирование на 20–30 сверстниках, отзыв эксперта, доработка</span></li>
+    <li><b>Февраль 2027</b><span>анализ результатов, план развития, защита проекта</span></li>
+  </ul>
+</section>
+
+<footer>
+  <p class="sig">Кондратюк Арсений, 10Б</p>
+  <p>Сайт даёт справочную информацию и не заменяет консультацию юриста. Результат проверки означает «есть признаки, совпадающие с типичными схемами», а не «это точно мошенничество». Мы не собираем и не храним персональные данные.</p>
+</footer>
+</div>
+
+<script>
+var ITEMS=[
+ ["Обещают гарантированный или очень быстрый доход",2,"invest"],
+ ["Торопят: «осталось 2 места», «решай сегодня»",1,"invest"],
+ ["Зовут в закрытый чат или канал",1,"invest"],
+ ["Просят перевести деньги на карту обычного человека",2,"card"],
+ ["Просят твою карту, пароли или код из СМС",3,"card"],
+ ["Нет данных о компании, договора или лицензии",1,"invest"],
+ ["Не объясняют, откуда берётся доход",1,"invest"],
+ ["Советует блогер или незнакомец, давят: «все уже заработали»",1,"invest"],
+ ["Просят ничего не говорить родителям",3,"help"],
+ ["Предлагают «обналичить» чужие деньги за процент",3,"card"]];
+var box=document.getElementById("checks"),res=document.getElementById("res");
+ITEMS.forEach(function(it,i){
+ var l=document.createElement("label");
+ l.innerHTML='<input type="checkbox" data-i="'+i+'"><span class="box">✓</span><span class="t">'+it[0]+'</span>';
+ box.appendChild(l);
+});
+function calc(){
+ var s=0,hard=false,cat={};
+ box.querySelectorAll("input:checked").forEach(function(c){
+  var it=ITEMS[c.dataset.i];s+=it[1];if(it[1]==3)hard=true;cat[it[2]]=(cat[it[2]]||0)+it[1];
+ });
+ var top="invest",m=0;for(var k in cat){if(cat[k]>m){m=cat[k];top=k}}
+ var lvl=(hard||s>=4)?"red":s>=1?"yellow":"green";
+ var T={green:["Зелёный: явных признаков нет","Это не гарантия безопасности. Если что-то смущает, спроси взрослого и проверь компанию на сайте Банка России."],
+  yellow:["Жёлтый: притормози","Есть признаки, совпадающие с типичными схемами. Не переводи деньги и не называй данные, пока не проверишь предложение."],
+  red:["Красный: стоп, не переводи","Есть признаки, совпадающие с типичными схемами обмана. Не отправляй деньги, не передавай карту и расскажи взрослому, которому доверяешь."]}[lvl];
+ res.className="res "+lvl;
+ var mt=lvl=="red"?"r":lvl=="yellow"?"y":"g";
+ res.innerHTML='<b>'+T[0]+'</b><div class="meter '+mt+'"><i></i><i></i><i></i></div><p>'+T[1]+'</p>'+
+  (s?'<button class="btn" data-go="'+top+'">Это законно?</button>':'<p class="fine">Отметь признаки выше, и здесь появится результат.</p>');
+}
+box.addEventListener("change",calc);
+res.addEventListener("click",function(e){
+ var g=e.target.getAttribute&&e.target.getAttribute("data-go");if(!g)return;
+ var d=document.getElementById("f-"+g);if(d){d.open=true;d.scrollIntoView({behavior:"smooth",block:"center"})}
+});
+calc();
+var r=document.documentElement;
+document.getElementById("theme").onclick=function(){
+ var dark=r.getAttribute("data-theme")?r.getAttribute("data-theme")=="dark":matchMedia("(prefers-color-scheme:dark)").matches;
+ r.setAttribute("data-theme",dark?"light":"dark");
+};
+</script>
+</body>
+</html>
